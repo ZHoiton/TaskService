@@ -2,17 +2,25 @@ const joi = require("joi");
 
 const name = "taskMiddleware";
 
-const verify = (request, responce, next) => {
+const create = (request, responce, next) => {
     const schema = joi.object().keys({
-        user_id: joi
-            .number()
-            .integer()
+        author_id: joi.string().required(),
+        // author_first_name: joi.string().required(),
+        // author_last_name: joi.string().required(),
+        // author_image: joi.string().required(),
+        project_id: joi.string().required(),
+        name: joi
+            .string()
+            .min(1)
             .required(),
-        begin_time: joi
-            .date()
-            .min("1-1-2000")
-            .required(),
-        end_time: joi
+        description: joi
+            .string()
+            .min(1),
+        checklist: joi.string(),
+        deadline: joi.date().min("now"),
+        assignees: joi.string(),
+        labels: joi.string(),
+        created_at: joi
             .date()
             .min("1-1-2000")
             .required()
@@ -28,6 +36,6 @@ const verify = (request, responce, next) => {
 };
 
 module.exports = {
-    verify,
+    create,
     name
 };

@@ -1,10 +1,11 @@
 const express = require("express");
 const body_parser = require("body-parser");
+const { Connection } = require("./db/connection");
+Connection.connect();
 
 const middleware = require("./app/middleware/middleware");
-const controllers = require("./app/controllers/controllers");
+const { TaskController } = require("./app/controllers/controllers");
 
-console.log(middleware, controllers);
 const app = express();
 
 const port = 4000;
@@ -17,8 +18,10 @@ app.use(body_parser.json());
 
 app.get("/", (req, res) => res.send("Hello World!"));
 
-app.post("/task", middleware.taskMiddleware.verify, (request, response) => {
-    response.sendStatus(200);
-});
+app.post("/task", middleware.taskMiddleware.create, TaskController.create);
+
+app.post("/u", TaskController.addUser);
+
+app.post("/a", TaskController.add);
 
 app.listen(port, () => console.log(`app started on port ${port}!`));
